@@ -58,6 +58,48 @@ footer{text-align:center;color:#718ab3;padding:18px;font-size:12px}
 <a href="#avisos">Avisos</a>
 <a href="#familia">Família</a>
 </nav>
-<a href="/.netlify/functions/auth-login" style="position:fixed;right:12px;bottom:80px;background:#5865f2;color:white;padding:12px 16px;border-radius:12px;text-decoration:none;font-weight:bold;z-index:10">Entrar com Discord</a>
+
+<div id="discord-area" style="position:fixed;right:12px;bottom:80px;z-index:10;background:#16294a;color:white;padding:12px;border-radius:12px">
+  <a id="discord-login"
+     href="/.netlify/functions/auth-login"
+     style="color:white;text-decoration:none;font-weight:bold">
+    Entrar com Discord
+  </a>
+  <span id="discord-user" style="display:none"></span>
+</div>
+
+<script>
+async function verificarLogin() {
+  const botao = document.getElementById("discord-login");
+  const usuario = document.getElementById("discord-user");
+
+  try {
+    const resposta = await fetch("/.netlify/functions/auth-me", {
+      credentials: "same-origin",
+      cache: "no-store"
+    });
+
+    if (!resposta.ok) throw new Error("Falha na consulta");
+
+    const dados = await resposta.json();
+
+    if (dados.authenticated) {
+      botao.style.display = "none";
+      usuario.style.display = "inline";
+      usuario.textContent = "✓ Conectado como " + dados.nome;
+    } else {
+      botao.style.display = "inline";
+      usuario.style.display = "none";
+    }
+  } catch (erro) {
+    botao.style.display = "inline";
+    usuario.style.display = "none";
+    console.error("Erro ao verificar login", erro);
+  }
+}
+
+verificarLogin();
+</script>
+ style="position:fixed;right:12px;bottom:80px;background:#5865f2;color:white;padding:12px 16px;border-radius:12px;text-decoration:none;font-weight:bold;z-index:10">Entrar com Discord</a>
 </body>
 </html>
