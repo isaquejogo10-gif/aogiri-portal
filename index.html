@@ -1,105 +1,110 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080e1c">
-<title>AOGIRI | Portal Oficial</title>
+<title>AOGIRI | Entrada</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080e1c;color:#f4f7ff;font-family:Arial,sans-serif}
-header{padding:22px 18px;background:#101c34;border-bottom:2px solid #287cff;text-align:center}
-.logo{font-size:42px}
-h1{margin:8px 0;font-size:28px;letter-spacing:3px}
-.sub{color:#9cb5df}
-main{max-width:720px;margin:auto;padding:20px 16px 90px}
-.card{background:#121f38;border:1px solid #263f65;border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 8px 24px #0003}
-h2{font-size:20px;margin-top:0;color:#69a6ff}
-p{line-height:1.65;color:#d3ddf0}
-.status{background:#1b304f;border-radius:12px;padding:15px;color:#bcd8ff;font-weight:bold}
-small{color:#8ea2c5}
-nav{position:fixed;bottom:0;left:0;right:0;background:#101c34;border-top:1px solid #294875;display:flex;justify-content:space-around;padding:15px 4px}
-nav a{color:#c5d9ff;text-decoration:none;font-size:13px;font-weight:bold}
-.btn{display:inline-block;padding:12px 18px;border-radius:10px;background:#276dff;color:white;text-decoration:none;font-weight:bold}
-footer{text-align:center;color:#718ab3;padding:18px;font-size:12px}
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(145deg,#07101e,#102b4b);
+  color:#fff;
+  font-family:Arial,sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.card{
+  width:100%;
+  max-width:430px;
+  padding:35px 25px;
+  background:#101c34;
+  border:1px solid #315887;
+  border-radius:24px;
+  text-align:center;
+}
+.logo{font-size:55px}
+h1{letter-spacing:4px;font-size:32px}
+p{color:#a9c2e3;line-height:1.6}
+.botao{
+  display:block;
+  padding:17px;
+  background:#5865f2;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+  border-radius:12px;
+  margin-top:25px;
+}
+.botao[hidden]{display:none}
+#status{font-size:13px;margin-top:20px}
 </style>
 </head>
 <body>
-<header>
-<div class="logo">💀👑</div>
-<h1>AOGIRI</h1>
-<div class="sub">PORTAL OFICIAL DA FAMÍLIA</div>
-</header>
-<main>
-<section class="card" id="inicio">
-<h2>Bem-vindo à AOGIRI</h2>
-<p>Nosso espaço oficial para acompanhar comunicados, informações da família e a meta semanal.</p>
-</section>
-<section class="card" id="meta">
-<h2>🎯 Meta semanal</h2>
-<p>A meta da família é completar uma das opções:</p>
-<p><strong>4 ações grandes concluídas</strong> ou <strong>15 eventos de carro-forte concluídos</strong>.</p>
-<div class="status">Status: aguardando sincronização</div>
-<p><small>O resultado será atualizado quando a integração com a planilha for configurada.</small></p>
-</section>
-<section class="card" id="avisos">
-<h2>📢 Avisos</h2>
-<p>Bem-vindos ao Portal AOGIRI! Os próximos comunicados serão publicados aqui.</p>
-</section>
-<section class="card" id="familia">
-<h2>🛡️ Nossa família</h2>
-<p>Organização, respeito, compromisso e união. Acompanhe os comunicados e orientações da liderança.</p>
-</section>
-</main>
-<footer>AOGIRI • Portal dos membros</footer>
-<nav>
-<a href="#inicio">Início</a>
-<a href="#meta">Meta</a>
-<a href="#avisos">Avisos</a>
-<a href="#familia">Família</a>
-</nav>
+<main class="card">
+  <div class="logo">💀👑</div>
+  <h1>AOGIRI</h1>
+  <p>PORTAL OFICIAL DA FAMÍLIA</p>
+  <p>Entre com sua conta Discord para acessar
+  o portal e suas permissões.</p>
 
-<div id="discord-area" style="position:fixed;right:12px;bottom:80px;z-index:10;background:#16294a;color:white;padding:12px;border-radius:12px">
-  <a id="discord-login"
-     href="/.netlify/functions/auth-login"
-     style="color:white;text-decoration:none;font-weight:bold">
+  <a class="botao"
+     id="entrar"
+     href="/.netlify/functions/auth-login">
     Entrar com Discord
   </a>
-  <span id="discord-user" style="display:none"></span>
-</div>
+
+  <a class="botao"
+     id="portal"
+     href="/.netlify/functions/portal"
+     hidden>
+    Acessar meu portal
+  </a>
+
+  <p id="status">Verificando sua conexão...</p>
+</main>
 
 <script>
-async function verificarLogin() {
-  const botao = document.getElementById("discord-login");
-  const usuario = document.getElementById("discord-user");
+async function verificar() {
+  const entrar = document.getElementById("entrar");
+  const portal = document.getElementById("portal");
+  const status = document.getElementById("status");
+
+  entrar.hidden = true;
+  portal.hidden = true;
 
   try {
-    const resposta = await fetch("/.netlify/functions/auth-me", {
-      credentials: "same-origin",
-      cache: "no-store"
-    });
+    const resposta = await fetch(
+      "/.netlify/functions/auth-me",
+      { credentials:"same-origin", cache:"no-store" }
+    );
 
-    if (!resposta.ok) throw new Error("Falha na consulta");
+    if (!resposta.ok) throw Error("Falha");
 
     const dados = await resposta.json();
 
     if (dados.authenticated) {
-      botao.style.display = "none";
-      usuario.style.display = "inline";
-      usuario.textContent = "✓ Conectado como " + dados.nome;
+      portal.hidden = false;
+      status.textContent =
+        "Conectado como " + dados.nome;
     } else {
-      botao.style.display = "inline";
-      usuario.style.display = "none";
+      entrar.hidden = false;
+      status.textContent =
+        "Login obrigatório para entrar.";
     }
-  } catch (erro) {
-    botao.style.display = "inline";
-    usuario.style.display = "none";
-    console.error("Erro ao verificar login", erro);
+  } catch {
+    entrar.hidden = false;
+    status.textContent =
+      "Não foi possível verificar a sessão.";
   }
 }
 
-verificarLogin();
+verificar();
 </script>
- style="position:fixed;right:12px;bottom:80px;background:#5865f2;color:white;padding:12px 16px;border-radius:12px;text-decoration:none;font-weight:bold;z-index:10">Entrar com Discord</a>
 </body>
 </html>
