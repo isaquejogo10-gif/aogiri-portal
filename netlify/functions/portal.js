@@ -478,7 +478,7 @@ nav button.active{
   
 
 <img src="/noFilter.png" alt="Logo AOGIRI" style="width:42px;height:42px;object-fit:contain;display:block">
-  
+  </div>
    <div>
     <h1>AOGIRI</h1>
     <small>PORTAL OFICIAL DA FAMÍLIA</small>
