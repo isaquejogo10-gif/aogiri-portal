@@ -2,109 +2,465 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080e1c">
-<title>AOGIRI | Entrada</title>
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  min-height:100vh;
-  background:linear-gradient(145deg,#07101e,#102b4b);
-  color:#fff;
-  font-family:Arial,sans-serif;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-}
-.card{
-  width:100%;
-  max-width:430px;
-  padding:35px 25px;
-  background:#101c34;
-  border:1px solid #315887;
-  border-radius:24px;
-  text-align:center;
-}
-.logo{font-size:55px}
-h1{letter-spacing:4px;font-size:32px}
-p{color:#a9c2e3;line-height:1.6}
-.botao{
-  display:block;
-  padding:17px;
-  background:#5865f2;
-  color:white;
-  text-decoration:none;
-  font-weight:bold;
-  border-radius:12px;
-  margin-top:25px;
-}
-.botao[hidden]{display:none}
-#status{font-size:13px;margin-top:20px}
-</style>
-</head>
-<body>
-<main class="card">
-  <div class="logo">💀👑</div>
-  <h1>AOGIRI</h1>
-  <p>PORTAL OFICIAL DA FAMÍLIA</p>
-  <p>Entre com sua conta Discord para acessar
-  o portal e suas permissões.</p>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#080e1c">
+  <title>AOGIRI | Acesso Oficial</title>
 
-  <a class="botao"
-     id="entrar"
-     href="/.netlify/functions/auth-login">
-    Entrar com Discord
-  </a>
-
-  <a class="botao"
-     id="portal"
-     href="/.netlify/functions/portal"
-     hidden>
-    Acessar meu portal
-  </a>
-
-  <p id="status">Verificando sua conexão...</p>
-</main>
-
-<script>
-async function verificar() {
-  const entrar = document.getElementById("entrar");
-  const portal = document.getElementById("portal");
-  const status = document.getElementById("status");
-
-  entrar.hidden = true;
-  portal.hidden = true;
-
-  try {
-    const resposta = await fetch(
-      "/.netlify/functions/auth-me",
-      { credentials:"same-origin", cache:"no-store" }
-    );
-
-    if (!resposta.ok) throw Error("Falha");
-
-    const dados = await resposta.json();
-
-    if (dados.authenticated) {
-      portal.hidden = false;
-      status.textContent =
-        "Conectado como " + dados.nome;
-    } else {
-      entrar.hidden = false;
-      status.textContent =
-        "Login obrigatório para entrar.";
+  <style>
+    :root {
+      --fundo:#080e1c;
+      --azul:#6ba7ff;
+      --texto:#f1f6ff;
+      --muted:#a3b6d4;
     }
-  } catch {
-    entrar.hidden = false;
-    status.textContent =
-      "Não foi possível verificar a sessão.";
-  }
-}
 
-verificar();
-</script>
+    * { box-sizing:border-box; }
+
+    [hidden] { display:none!important; }
+
+    body {
+      margin:0;
+      min-height:100vh;
+      font-family:-apple-system,BlinkMacSystemFont,
+        "Segoe UI",Arial,sans-serif;
+      background:
+        radial-gradient(circle at 50% 12%,
+          #214b85 0%,#101e37 30%,
+          #080e1c 75%);
+      color:var(--texto);
+      overflow-x:hidden;
+    }
+
+    .container {
+      width:100%;
+      max-width:490px;
+      margin:auto;
+      padding:22px 19px 45px;
+    }
+
+    .topo {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .marca {
+      display:flex;
+      align-items:center;
+      gap:11px;
+    }
+
+    .marca img {
+      width:43px;
+      height:43px;
+      object-fit:contain;
+    }
+
+    .marca strong {
+      display:block;
+      font-size:20px;
+      letter-spacing:3px;
+    }
+
+    .marca small {
+      color:#9fb9e0;
+      font-size:10px;
+      letter-spacing:1px;
+    }
+
+    .topo-tag {
+      border:1px solid #3d6295;
+      background:#1a3153;
+      color:#bcd8ff;
+      border-radius:30px;
+      padding:9px 12px;
+      font-size:11px;
+      white-space:nowrap;
+    }
+
+    .card {
+      position:relative;
+      overflow:hidden;
+      margin-top:35px;
+      padding:31px 23px 27px;
+      text-align:center;
+      background:
+        linear-gradient(155deg,#192e50,#101a30);
+      border:1px solid #3a6198;
+      border-radius:27px;
+      box-shadow:
+        0 25px 65px #00000040,
+        inset 0 1px 0 #ffffff12;
+    }
+
+    .card:before {
+      content:"";
+      position:absolute;
+      width:260px;
+      height:260px;
+      top:-140px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#377ce844;
+      filter:blur(65px);
+      border-radius:50%;
+      pointer-events:none;
+    }
+
+    .logo-area {
+      position:relative;
+      width:150px;
+      height:150px;
+      margin:5px auto 23px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid #507bb74d;
+      background:
+        radial-gradient(circle,#28518b77,#13264633 70%);
+      border-radius:50%;
+    }
+
+    .logo-area:before {
+      content:"";
+      position:absolute;
+      inset:9px;
+      border:1px dashed #719ee24d;
+      border-radius:50%;
+    }
+
+    .logo-area img {
+      position:relative;
+      width:126px;
+      height:126px;
+      object-fit:contain;
+      filter:drop-shadow(0 8px 15px #0008);
+    }
+
+    .etiqueta {
+      display:inline-block;
+      padding:8px 13px;
+      color:#a8ceff;
+      background:#213e65;
+      border:1px solid #426fa4;
+      border-radius:30px;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:2px;
+    }
+
+    h1 {
+      font-size:32px;
+      line-height:1.15;
+      letter-spacing:-1px;
+      margin:22px 0 12px;
+    }
+
+    .descricao {
+      color:#b8cce9;
+      line-height:1.7;
+      font-size:14px;
+      margin:0 auto;
+      max-width:330px;
+    }
+
+    .divisor {
+      height:1px;
+      background:linear-gradient(
+        90deg,transparent,#456da1,transparent
+      );
+      margin:27px 0;
+    }
+
+    .botao {
+      width:100%;
+      min-height:58px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      padding:16px 18px;
+      background:linear-gradient(135deg,#6975ff,#4753d6);
+      color:white;
+      text-decoration:none;
+      font-weight:800;
+      font-size:16px;
+      border-radius:15px;
+      box-shadow:0 9px 25px #4a55e83d;
+    }
+
+    .botao.portal {
+      background:linear-gradient(135deg,#2f83e6,#1c5db6);
+    }
+
+    .discord-icon {
+      width:28px;
+      height:28px;
+      background:#ffffff27;
+      border-radius:9px;
+      display:grid;
+      place-items:center;
+      font-size:21px;
+    }
+
+    .status {
+      min-height:22px;
+      margin:19px 0 0;
+      color:#9fb9df;
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .sair {
+      display:inline-block;
+      margin-top:12px;
+      color:#a7c8f2;
+      font-size:13px;
+      padding:8px;
+    }
+
+    .seguranca {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      margin-top:25px;
+      color:#98b3d8;
+      font-size:12px;
+    }
+
+    .recursos {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:17px;
+    }
+
+    .recurso {
+      background:#121f37;
+      border:1px solid #294870;
+      border-radius:17px;
+      padding:18px 15px;
+      text-align:left;
+    }
+
+    .recurso .icone {
+      display:block;
+      font-size:25px;
+      margin-bottom:13px;
+    }
+
+    .recurso strong {
+      font-size:13px;
+    }
+
+    .recurso p {
+      font-size:11px;
+      line-height:1.6;
+      color:var(--muted);
+      margin:7px 0 0;
+    }
+
+    footer {
+      text-align:center;
+      padding:28px 0 0;
+      color:#7289aa;
+      font-size:11px;
+      letter-spacing:1px;
+    }
+
+    @media(max-width:360px) {
+      h1 { font-size:28px; }
+      .card { padding:25px 17px; }
+      .topo-tag { font-size:9px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <header class="topo">
+      <div class="marca">
+        <img src="/noFilter.png" alt="AOGIRI">
+        <div>
+          <strong>AOGIRI</strong>
+          <small>PORTAL OFICIAL</small>
+        </div>
+      </div>
+
+      <span class="topo-tag">🔐 ACESSO RESTRITO</span>
+    </header>
+
+    <main>
+      <section class="card">
+
+        <div class="logo-area">
+          <img
+            src="/noFilter.png"
+            alt="Caveira com coroa da AOGIRI"
+          >
+        </div>
+
+        <span class="etiqueta">
+          PORTAL DOS INTEGRANTES
+        </span>
+
+        <h1>Bem-vindo à AOGIRI.</h1>
+
+        <p class="descricao">
+          Identifique-se com seu Discord para
+          acessar o portal oficial e as
+          ferramentas autorizadas para seu cargo.
+        </p>
+
+        <div class="divisor"></div>
+
+        <a
+          class="botao"
+          id="entrar"
+          href="/.netlify/functions/auth-login"
+          hidden
+        >
+          <span class="discord-icon">◈</span>
+          Entrar com Discord
+        </a>
+
+        <a
+          class="botao portal"
+          id="portal"
+          href="/.netlify/functions/portal"
+          hidden
+        >
+          🛡️ Acessar meu portal
+        </a>
+
+        <a
+          class="sair"
+          id="sair"
+          href="/.netlify/functions/portal?sair=1"
+          hidden
+        >
+          Sair desta conta
+        </a>
+
+        <p id="status" class="status" role="status">
+          Verificando sua conexão...
+        </p>
+
+        <div class="seguranca">
+          🛡️ Identidade verificada pelo Discord
+        </div>
+
+      </section>
+
+      <div class="recursos">
+
+        <div class="recurso">
+          <span class="icone">👥</span>
+          <strong>Área de membros</strong>
+          <p>
+            Informações e comunicados
+            da família.
+          </p>
+        </div>
+
+        <div class="recurso">
+          <span class="icone">👑</span>
+          <strong>Gerência</strong>
+          <p>
+            Acesso a áreas exclusivas
+            conforme o cargo.
+          </p>
+        </div>
+
+      </div>
+    </main>
+
+    <footer>
+      AOGIRI • RESPEITO • UNIÃO • COMPROMISSO
+    </footer>
+
+  </div>
+
+  <script>
+    async function verificarLogin() {
+      const entrar = document.getElementById("entrar");
+      const portal = document.getElementById("portal");
+      const sair = document.getElementById("sair");
+      const status = document.getElementById("status");
+
+      const parametros = new URLSearchParams(
+        window.location.search
+      );
+
+      try {
+        const resposta = await fetch(
+          "/.netlify/functions/auth-me",
+          {
+            credentials:"same-origin",
+            cache:"no-store"
+          }
+        );
+
+        if (!resposta.ok) {
+          throw new Error("Falha na consulta");
+        }
+
+        const dados = await resposta.json();
+
+        if (dados.authenticated === true) {
+          portal.hidden = false;
+          sair.hidden = false;
+          entrar.hidden = true;
+
+          status.textContent =
+            "✓ Discord conectado como " + dados.nome;
+
+          // Entra automaticamente no portal protegido.
+          window.location.replace(
+            "/.netlify/functions/portal"
+          );
+
+        } else {
+          portal.hidden = true;
+          sair.hidden = true;
+          entrar.hidden = false;
+
+          const erro = parametros.get("erro");
+
+          if (
+            erro === "sem-acesso" ||
+            erro === "sem-cargo"
+          ) {
+            status.textContent =
+              "Sua conta não possui acesso autorizado. " +
+              "Verifique seus cargos com a liderança.";
+          } else if (erro === "login") {
+            status.textContent =
+              "Não foi possível concluir o login. " +
+              "Tente novamente.";
+          } else {
+            status.textContent =
+              "Conecte seu Discord para continuar.";
+          }
+        }
+
+      } catch {
+        entrar.hidden = false;
+        portal.hidden = true;
+        sair.hidden = true;
+
+        status.textContent =
+          "Não foi possível verificar sua sessão. " +
+          "Você pode tentar entrar novamente.";
+      }
+    }
+
+    verificarLogin();
+  </script>
+
 </body>
 </html>
