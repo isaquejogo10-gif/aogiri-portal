@@ -474,7 +474,10 @@ nav button.active{
 <header>
  <div class="head-inner">
   <div class="brand">
-   <div class="emblem">💀</div>
+<div class="emblem">
+  <img src="/logo-aogiri.png" alt="Logo AOGIRI"
+       style="width:100%;height:100%;object-fit:contain">
+</div>
    <div>
     <h1>AOGIRI</h1>
     <small>PORTAL OFICIAL DA FAMÍLIA</small>
