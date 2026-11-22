@@ -475,7 +475,10 @@ nav button.active{
  <div class="head-inner">
   <div class="brand">
 <div class="emblem">
-  <img src="/logo-aogiri.png" alt="Logo AOGIRI"
+  
+<img src="/noFilter.png" alt="Logo AOGIRI"
+     style="width:100%;height:100%;object-fit:contain">
+   alt="Logo AOGIRI"
        style="width:100%;height:100%;object-fit:contain">
 </div>
    <div>
