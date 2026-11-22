@@ -705,7 +705,170 @@ if (copiarAviso) {
  copiarAviso.addEventListener("click", () =>
   copiar("comunicado","retornoAviso","Comunicado AOGIRI")
  );
+} 
+/* AOGIRI - Avisos publicados */
+const abaAvisos = document.getElementById("avisos");
+
+const painelLista = document.createElement("div");
+painelLista.className = "card";
+painelLista.innerHTML =
+  '<span class="eyebrow">COMUNICADOS OFICIAIS</span>' +
+  '<h3>📢 Avisos publicados</h3>' +
+  '<div id="listaAvisos">Carregando avisos...</div>' +
+  '<button class="primary" id="atualizarAvisos" type="button">' +
+  'Atualizar avisos</button>';
+
+if (abaAvisos) {
+  const antigo = Array.from(
+    abaAvisos.querySelectorAll(".card")
+  ).find(item => item.textContent.includes("EM PREPARAÇÃO"));
+
+  if (antigo) antigo.remove();
+
+  abaAvisos.insertBefore(
+    painelLista,
+    abaAvisos.querySelector(".card")
+  );
 }
+
+async function carregarAvisos() {
+  const lista = document.getElementById("listaAvisos");
+  if (!lista) return;
+
+  lista.textContent = "Carregando avisos...";
+
+  try {
+    const resposta = await fetch(
+      "/.netlify/functions/avisos",
+      { credentials: "same-origin", cache: "no-store" }
+    );
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      throw new Error(dados.erro || "Falha ao carregar");
+    }
+
+    lista.replaceChildren();
+
+    if (!Array.isArray(dados.avisos) ||
+        dados.avisos.length === 0) {
+      lista.textContent = "Nenhum aviso publicado ainda.";
+      return;
+    }
+
+    dados.avisos.forEach(aviso => {
+      const bloco = document.createElement("article");
+      bloco.className = "notice";
+
+      const titulo = document.createElement("h3");
+      titulo.textContent = aviso.titulo;
+
+      const info = document.createElement("p");
+      info.className = "muted";
+      info.textContent =
+        "Publicado por " + aviso.autor + " • " +
+        new Date(aviso.data).toLocaleString("pt-BR");
+
+      const texto = document.createElement("p");
+      texto.style.whiteSpace = "pre-wrap";
+      texto.textContent = aviso.texto;
+
+      bloco.append(titulo, info, texto);
+      lista.appendChild(bloco);
+    });
+
+  } catch (erro) {
+    lista.textContent = "Erro: " + erro.message;
+  }
+}
+
+if (abaAvisos) {
+  document.getElementById("atualizarAvisos")
+    .addEventListener("click", carregarAvisos);
+}
+
+/* AOGIRI - Publicacao pela gerencia */
+const painelGerencia = document.getElementById("gerencia");
+
+if (painelGerencia) {
+  const formulario = document.createElement("div");
+  formulario.className = "card";
+
+  formulario.innerHTML =
+    '<span class="eyebrow">CENTRAL DE PUBLICAÇÃO</span>' +
+    '<h3>📢 Publicar aviso</h3>' +
+    '<label for="tituloNovoAviso">Título do comunicado</label>' +
+    '<input id="tituloNovoAviso" maxlength="100" ' +
+    'placeholder="Ex.: Reunião da família" ' +
+    'style="display:block;width:100%;padding:14px;' +
+    'margin:12px 0;background:#0a1528;color:white;' +
+    'border:1px solid #426a9b;border-radius:12px">' +
+    '<label for="textoNovoAviso">Mensagem</label>' +
+    '<textarea id="textoNovoAviso" maxlength="2000" ' +
+    'placeholder="Escreva o aviso aqui..."></textarea>' +
+    '<button class="primary" id="publicarAviso" type="button">' +
+    '📢 Publicar agora</button>' +
+    '<p class="feedback" id="mensagemPublicacao" role="status"></p>';
+
+  painelGerencia.insertBefore(
+    formulario,
+    painelGerencia.querySelector(".card")
+  );
+
+  const publicar = document.getElementById("publicarAviso");
+
+  publicar.addEventListener("click", async () => {
+    const campoTitulo = document.getElementById("tituloNovoAviso");
+    const campoTexto = document.getElementById("textoNovoAviso");
+    const retorno = document.getElementById("mensagemPublicacao");
+
+    const titulo = campoTitulo.value.trim();
+    const texto = campoTexto.value.trim();
+
+    if (titulo.length < 3 || texto.length < 5) {
+      retorno.textContent =
+        "Preencha o título e a mensagem do comunicado.";
+      return;
+    }
+
+    publicar.disabled = true;
+    retorno.textContent = "Publicando...";
+
+    try {
+      const resposta = await fetch(
+        "/.netlify/functions/avisos",
+        {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ titulo, texto })
+        }
+      );
+
+      const dados = await resposta.json();
+
+      if (!resposta.ok) {
+        throw new Error(dados.erro || "Erro na publicação");
+      }
+
+      campoTitulo.value = "";
+      campoTexto.value = "";
+      retorno.textContent = "Aviso publicado com sucesso!";
+
+      await carregarAvisos();
+      abrirPagina("avisos");
+
+    } catch (erro) {
+      retorno.textContent = "Erro: " + erro.message;
+    } finally {
+      publicar.disabled = false;
+    }
+  });
+}
+
+carregarAvisos();
+
 </script>
 </body>
 </html>`;
