@@ -476,11 +476,9 @@ nav button.active{
   <div class="brand">
 <div class="emblem">
   
-<img src="/noFilter.png" alt="Logo AOGIRI"
-     style="width:100%;height:100%;object-fit:contain">
-   alt="Logo AOGIRI"
-       style="width:100%;height:100%;object-fit:contain">
-</div>
+
+<img src="/noFilter.png" alt="Logo AOGIRI" style="width:42px;height:42px;object-fit:contain;display:block">
+  
    <div>
     <h1>AOGIRI</h1>
     <small>PORTAL OFICIAL DA FAMÍLIA</small>
